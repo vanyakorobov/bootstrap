@@ -2,27 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Update user</title>
+    <title>Update User</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Update user</h1>
-<form th:action="@{/admin/update}" th:object="${user}" method="post">
-    <input type="hidden" th:field="*{id}" />
-    <div>
-        <label>Name:</label>
-        <input type="text" th:field="*{name}" />
-    </div>
-    <div>
-        <label>Age:</label>
-        <input type="number" th:field="*{age}" />
-    </div>
-    <div>
-        <button type="submit">Update</button>
-    </div>
-    <div>
-        <label>Password:</label>
-        <input type="number" th:field="*{password}" />
-    </div>
-</form>
+<div class="container mt-4">
+    <h1>Update User</h1>
+    <form th:action="@{/admin/update}" th:object="${user}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" th:field="*{name}" id="name" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" th:field="*{age}" id="age" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" th:field="*{password}" id="password" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
