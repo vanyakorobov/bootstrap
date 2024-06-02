@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>User information</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="выход из системы"/>
+</form>
+
+
+<table border="2">
+    <caption><h2>User Info</h2></caption>
+    <thead>
+    <tr>
+        <th> id </th>
+        <th> username </th>
+        <th> age </th>
+        <th> roles </th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:object="${user}">
+
+        <td th:text=" ${user.getId()} "></td>
+        <td th:text=" ${user.getUsername()} "></td>
+        <td th:text=" ${user.getAge()} "></td>
+        <td th:text=" ${user.getAuthorities()} "></td>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<button onclick="window.location.href = '/to_main'">На главную</button>
+</body>
+</html>

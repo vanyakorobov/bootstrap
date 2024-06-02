@@ -1,0 +1,65 @@
+<!DOCTYPE html> <!-- Объявление типа документа -->
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns="http://www.w3.org/1999/xhtml"> <!-- Объявление пространства имен Thymeleaf -->
+<head> <!-- Начало секции заголовка документа -->
+    <meta charset="UTF-8"> <!-- Установка кодировки документа -->
+    <title>User Management System</title> <!-- Заголовок страницы -->
+</head> <!-- Конец секции заголовка документа -->
+<body> <!-- Начало секции тела документа -->
+
+<h1>User Management System</h1> <!-- Заголовок страницы -->
+
+<!-- Форма для добавления нового пользователя -->
+<form th:action="@{/admin/addUser}" th:method="post" th:object="${user}"> <!-- Отправка данных на сервер методом POST -->
+    <!-- <input type="hidden" th:field="*{id}"/> -->
+    <label for="name">Name:</label> <!-- Метка для поля "Имя" -->
+    <input th:field="*{name}" type="text" id="name" name="name" required> <!-- Поле ввода для имени -->
+    <br>
+    <label for="password"> Password</label>
+    <input th:field="*{password}" type="number" id="password" name="password" required>
+    <br> <!-- Перенос на новую строку -->
+    <label for="age">Age:</label> <!-- Метка для поля "Email" -->
+    <input th:field="*{age}" type="number" id="age" name="age" required> <!-- Поле ввода для возраста -->
+    <br> <!-- Перенос на новую строку -->
+    <th:block th:each="role: ${allRoles}">
+        <input type="checkbox" th:field="*{roles}"
+               th:text="${role.roleName}" th:value="${role.id}"/>
+    </th:block>
+    <input type="submit" value="save"/> <!-- Кнопка отправки формы -->
+</form> <!-- Конец формы -->
+
+<br> <!-- Перенос на новую строку -->
+
+<!-- Таблица для отображения всех пользователей -->
+<table border="1"> <!-- Таблица с границами -->
+    <thead> <!-- Начало секции заголовка таблицы -->
+    <tr> <!-- Начало строки заголовка таблицы -->
+        <th>ID</th> <!-- Заголовок столбца "ID" -->
+        <th>Name</th> <!-- Заголовок столбца "Имя" -->
+        <th>Role</th> <!-- Заголовок столбца "Имя" -->
+    </tr> <!-- Конец строки заголовка таблицы -->
+    </thead> <!-- Конец секции заголовка таблицы -->
+    <tbody> <!-- Начало секции тела таблицы -->
+    <!-- Итерация по каждому пользователю и отображение его данных -->
+    <tr th:each="user : ${users}"> <!-- Для каждого пользователя в списке пользователей -->
+        <td th:text="${user.id}"></td> <!-- Вывод ID пользователя -->
+        <td th:text="${user.name}"></td> <!-- Вывод имени пользователя -->
+        <td th:text="${user.roles}"></td> <!-- Вывод имени пользователя -->
+        <!-- Кнопка для удаления пользователя -->
+        <td>
+            <form th:action="@{/admin/deleteUser}" th:method="post"> <!-- Форма для отправки данных на сервер методом POST -->
+                <input type="hidden" name="id" th:value="${user.id}"> <!-- Скрытое поле для передачи ID пользователя -->
+                <button type="submit">Delete</button> <!-- Кнопка для удаления пользователя -->
+            </form> <!-- Конец формы -->
+        </td> <!-- Конец ячейки с кнопкой удаления -->
+        <td>
+            <form th:action="@{/admin/edit}" th:method="post"> <!-- Форма для отправки данных на сервер методом POST -->
+                <input type="hidden" name="id" th:value="${user.id}"> <!-- Скрытое поле для передачи ID пользователя -->
+                <button type="submit">Update</button> <!-- Кнопка для удаления пользователя -->
+            </form> <!-- Конец формы -->
+        </td> <!-- Конец ячейки с кнопкой удаления -->
+    </tr> <!-- Конец строки таблицы -->
+    </tbody> <!-- Конец секции тела таблицы -->
+</table> <!-- Конец таблицы -->
+
+</body> <!-- Конец секции тела документа -->
+</html> <!-- Конец документа -->
