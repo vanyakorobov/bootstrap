@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,7 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +36,13 @@ public class AdminController {
     @PostMapping("/edit")
     public String showEditUserForm(@RequestParam("id") long id, ModelMap model) {
         Optional<User> user = userService.getUserById(id);
-        model.addAttribute("user", user.get());
+        if (user.isPresent()) {
+            model.addAttribute("user", user.get());
+            model.addAttribute("allRoles", roleService.getAllRoles());
+        } else {
+            model.addAttribute("user", new User());
+            model.addAttribute("allRoles", roleService.getAllRoles());
+        }
         return "edit_user";
     }
 
@@ -44,18 +53,28 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+//    @GetMapping(value = "")
+//    public String allUsers(ModelMap model, @ModelAttribute("user") User user) {
+//        List<User> users = userService.getAllUsers();
+//        model.addAttribute("users", users);
+//        model.addAttribute("user", new User());
+//        model.addAttribute("allRoles", roleService.getAllRoles());
+//        return "web";
+//    }
+
     @GetMapping(value = "")
-    public String allUsers(ModelMap model, @ModelAttribute("user") User user) {
+    public String allUsers(ModelMap model, Authentication auth) {
         List<User> users = userService.getAllUsers();
-        model.addAttribute("users", users);
-        model.addAttribute("user", new User());
-        model.addAttribute("allRoles", roleService.getAllRoles());
+        User user = userService.findByUsername(auth.getName());
+        System.out.println(user);
+        model.addAttribute("listOfUsers", users);
+        model.addAttribute("user", user);
         return "web";
     }
 
-    // @PostMapping("/update")
-    // public String updateUser(@ModelAttribute User user) {
-    //     userService.saveUser(user);
-    //     return "redirect:/admin";
-    // }
+     @PostMapping("/update")
+     public String updateUser(@ModelAttribute User user) {
+         userService.saveUser(user);
+         return "redirect:/admin";
+     }
 }

@@ -3,9 +3,7 @@ package ru.kata.spring.boot_security.demo.model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -15,8 +13,16 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role_name", unique = true, nullable = false)
-    private String roleName;
+    @Column(name = "name", unique = true, nullable = false)
+    private String name;
+
+    public Role(String roleUser) {
+        this.name = roleUser;
+    }
+
+    public Role() {
+
+    }
 
     public Long getId() {
         return id;
@@ -26,18 +32,18 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getName() {
+        return name;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setName(String roleName) {
+        this.name = roleName;
     }
 
 
     @Override
     public String getAuthority() {
-        return roleName;
+        return name;
     }
 
     @Override
@@ -45,16 +51,16 @@ public class Role implements GrantedAuthority {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return Objects.equals(roleName, role.roleName);
+        return Objects.equals(name, role.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(roleName);
+        return Objects.hashCode(name);
     }
 
     @Override
     public String toString() {
-        return roleName;
+        return name;
     }
 }

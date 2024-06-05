@@ -9,17 +9,24 @@ import java.util.List;
 
 @Service
 public class RoleService {
+
     private RoleRepository roleRepository;
 
     public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
+
     @Transactional(readOnly = true)
     public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
 
     public Role findByName(String name) {
-        return roleRepository.findByRoleName(name);
+        return roleRepository.findByName(name);
+    }
+
+    @Transactional
+    public void saveRole(Role role) {
+        roleRepository.save(role);
     }
 }
