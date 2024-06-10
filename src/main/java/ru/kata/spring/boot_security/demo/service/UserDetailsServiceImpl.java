@@ -27,7 +27,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByName(username);
-        System.out.println(user);
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
@@ -38,7 +37,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         org.springframework.security.core.userdetails.User user1 = new org.springframework.security.core.userdetails.User
                 (user.getName(), user.getPassword(), grantedAuthorities);
-        System.out.println(user1.getUsername());
         return user1;
     }
 }

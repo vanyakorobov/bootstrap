@@ -30,11 +30,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();

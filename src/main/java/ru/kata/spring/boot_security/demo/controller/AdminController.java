@@ -11,13 +11,13 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
     private UserServiceImpl userService;
     private RoleService roleService;
 
@@ -38,29 +38,18 @@ public class AdminController {
         Optional<User> user = userService.getUserById(id);
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
-            model.addAttribute("allRoles", roleService.getAllRoles());
         } else {
-            model.addAttribute("user", new User());
-            model.addAttribute("allRoles", roleService.getAllRoles());
+            model.addAttribute("error", "User not found");
         }
+        model.addAttribute("allRoles", roleService.getAllRoles());
         return "edit_user";
     }
 
     @PostMapping("/addUser")
     public String addUser(@ModelAttribute("user") User user) {
-        System.out.println(user);
         userService.saveUser(user);
         return "redirect:/admin";
     }
-
-//    @GetMapping(value = "")
-//    public String allUsers(ModelMap model, @ModelAttribute("user") User user) {
-//        List<User> users = userService.getAllUsers();
-//        model.addAttribute("users", users);
-//        model.addAttribute("user", new User());
-//        model.addAttribute("allRoles", roleService.getAllRoles());
-//        return "web";
-//    }
 
     @GetMapping(value = "")
     public String allUsers(ModelMap model, Authentication auth) {
